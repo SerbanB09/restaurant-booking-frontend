@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { listVenues, type VenueSummary } from '../api/public';
+import { listVenues, type Venue } from '../api/public';
 
 function VenueListPage() {
-    const [venues, setVenues] = useState<VenueSummary[] | null>(null);
+    const [venues, setVenues] = useState<Venue[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
