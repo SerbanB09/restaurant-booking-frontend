@@ -6,14 +6,14 @@ export interface Venue {
     address: string;
 }
 
-export interface GuestBookingPayload {
-    guest_name: string;
-    guest_phone: string;
+export interface BookingPayload {
     person_count: number;
     date: string;
+    guest_name?: string;
+    guest_phone?: string;
 }
 
-export interface GuestBooking {
+export interface Booking {
     id: string;
     venue_id: string;
     person_count: number;
@@ -21,18 +21,25 @@ export interface GuestBooking {
     guest_name: string;
 }
 
-export async function getVenue(venueId: string): Promise<Venue> {
-    const res = await fetch(`${API_URL}/public/venues/${venueId}`);
-    if (!res.ok) {
-        throw new Error('Could not load this venue.');
-    }
+export async function listVenues(): Promise<Venue[]> {
+    const res = await fetch(`${API_URL}/public/venues`);
+    if (!res.ok) throw new Error('Could not load restaurants.');
     return res.json();
 }
 
-export async function createGuestBooking(venueId: string, payload: GuestBookingPayload): Promise<GuestBooking> {
+export async function getVenue(venueId: string): Promise<Venue> {
+    const res = await fetch(`${API_URL}/public/venues/${venueId}`);
+    if (!res.ok) throw new Error('Could not load this venue.');
+    return res.json();
+}
+
+export async function createBooking(venueId: string, payload: BookingPayload, token?: string | null): Promise<Booking> {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const res = await fetch(`${API_URL}/public/venues/${venueId}/bookings`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload)
     });
 

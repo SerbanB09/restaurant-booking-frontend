@@ -1,7 +1,7 @@
-import type { GuestBooking, Venue } from '../api/public';
+import type { Booking, Venue } from '../api/public';
 
 interface Props {
-    booking: GuestBooking;
+    booking: Booking;
     venue: Venue;
     onBookAnother: () => void;
 }
